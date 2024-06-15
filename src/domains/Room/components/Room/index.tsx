@@ -1,14 +1,16 @@
 "use client";
 import CircularProgressBar from "@/components/ui/progress";
+import { useAuthUseCase } from "@/domains/Auth/usecase";
 import { cn } from "@/lib/utils";
+import type { User } from "firebase/auth";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { UserTypingState } from "../../../Game/components/UserTypingState";
 import { useConnection } from "../../../Game/hooks/useConnect";
 import type { Room as RoomType } from "../../../Game/types";
-
 export const Room = () => {
-	const { room, connected } = useConnection();
+	const { room, connected, handleStartGame } = useConnection();
+	const { user } = useAuthUseCase();
 	const [dots, setDots] = useState(0);
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -31,14 +33,26 @@ export const Room = () => {
 		case "finish":
 			return <FinishRoom />;
 		default:
-			return <PendingRoom {...room} isMatched={room.status === "matched"} />;
+			return (
+				<PendingRoom
+					{...room}
+					handleStartGame={handleStartGame}
+					isMatched={room.status === "matched"}
+					user={user}
+				/>
+			);
 	}
 };
 
 const PendingRoom = ({
 	userNum,
 	isMatched,
-}: RoomType & { isMatched: boolean }) => {
+	ownerId,
+	user,
+	handleStartGame,
+}: RoomType & { isMatched: boolean } & { user: User | null } & {
+	handleStartGame: () => void;
+}) => {
 	return (
 		<div className="flex h-full w-full flex-col items-center">
 			{!isMatched ? (
@@ -62,6 +76,15 @@ const PendingRoom = ({
 				<p className="text-gray-500 text-sm">参加人数</p>
 				<p className="font-bold text-xl">{`${userNum} 人`}</p>
 			</div>
+			{!isMatched && ownerId === user?.uid && (
+				<button
+					onClick={handleStartGame}
+					type="button"
+					className="cursor-pointer"
+				>
+					ゲーム開始
+				</button>
+			)}
 			<p className={isMatched ? "" : "opacity-0"}>もうすぐ始まります</p>
 		</div>
 	);

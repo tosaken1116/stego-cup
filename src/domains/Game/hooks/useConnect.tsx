@@ -76,10 +76,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
 						if (data.payload.status === "finish") {
 							ws.close();
 						}
-						setRoom({
-							userNum: data.payload.userNum,
-							status: data.payload.status,
-						});
+						setRoom(data.payload);
 						break;
 					case "ChangeOtherUserState":
 						setUsersState((prev) => ({
@@ -153,7 +150,9 @@ export const useConnection = () => {
 		);
 	};
 	const userIDs = usersState?.map((v) => v.id) ?? [];
-
+	const handleStartGame = () => {
+		connection?.send(JSON.stringify({ type: "StartGame" }));
+	};
 	return {
 		connected,
 		usersState: (usersState ?? []).sort((a, b) => a.id.localeCompare(b.id)),
@@ -163,6 +162,7 @@ export const useConnection = () => {
 		life,
 		attack,
 		userIDs,
+		handleStartGame,
 		handleTypingKey,
 		handleFinishCurrentSequence,
 	};

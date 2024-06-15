@@ -1,6 +1,8 @@
 export type Room = {
 	userNum: number;
 	status: "pending" | "playing" | "finish" | "matched";
+	ownerId: string;
+	startedAt: number;
 };
 
 export type TypingKey = {

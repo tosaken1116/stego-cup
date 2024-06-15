@@ -25,13 +25,8 @@ export default function RootLayout({
 		<html lang="ja">
 			<body className={cn(inter.className, "bg-black text-white")}>
 				<Header />
-				<div className="absolute top-0 left-0 h-screen w-full">
-					<Image
-						src="/image/key.avif"
-						fill
-						alt=""
-						className="-z-10 h-full w-full"
-					/>
+				<div className="-z-10 absolute top-0 left-0 h-screen w-full">
+					<Image src="/image/key.avif" fill alt="" className=" h-full w-full" />
 				</div>
 				<WithAuth>{children}</WithAuth>
 			</body>
