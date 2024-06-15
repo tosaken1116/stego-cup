@@ -1,6 +1,5 @@
 import { useAuthUseCase } from "@/domains/Auth/usecase";
 import { useRouter } from "next/navigation";
-import router from "next/router";
 import { useState } from "react";
 import { roomRepository } from "../repository";
 import type { RESTPostRoomRequest } from "../types/schema";
@@ -8,6 +7,7 @@ import type { RESTPostRoomRequest } from "../types/schema";
 export const useRoomUseCase = () => {
 	const [isMatching, setIsMatching] = useState(false);
 	const [isCreating, setIsCreating] = useState(false);
+	const router = useRouter();
 	const handleMatching = async (token: string) => {
 		setIsMatching(true);
 		const id = await roomRepository.match(token);
