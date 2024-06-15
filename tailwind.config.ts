@@ -178,6 +178,23 @@ const config = {
 						opacity: "1",
 					},
 				},
+				"move-to-target": {
+					"0%": {
+						transform: "translateX(0) translateY(0)",
+						opacity: "0",
+					},
+					"10%": {
+						opacity: "1",
+					},
+					"70%": {
+						opacity: "1",
+					},
+					"100%": {
+						transform:
+							"translateX(var(--target-x)) translateY(var(--target-y))",
+						opacity: "0",
+					},
+				},
 			},
 			transitionDelay: {
 				"1500": "1500ms",
@@ -200,6 +217,7 @@ const config = {
 				"puff-out-hor":
 					"puff-out-hor 0.9s cubic-bezier(0.165, 0.840, 0.440, 1.000)   both",
 				"slide-in": "slide-in 0.5s ease-out",
+				"move-to-target": "move-to-target 0.5s ease-out",
 			},
 		},
 	},
