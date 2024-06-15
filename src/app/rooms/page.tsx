@@ -1,5 +1,3 @@
-import { ConnectionProvider } from "@/domains/Game/hooks/useConnect";
-import {} from "@/domains/Room/components/CreateRoom";
 import { StartMatch } from "@/domains/Room/components/StartMatchButton";
 
 export default function RoomsPage() {
