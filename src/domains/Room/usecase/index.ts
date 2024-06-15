@@ -1,5 +1,6 @@
 import { useAuthUseCase } from "@/domains/Auth/usecase";
 import { useRouter } from "next/navigation";
+import router from "next/router";
 import { useState } from "react";
 import { roomRepository } from "../repository";
 import type { RESTPostRoomRequest } from "../types/schema";
@@ -7,11 +8,7 @@ import type { RESTPostRoomRequest } from "../types/schema";
 export const useRoomUseCase = () => {
 	const [isMatching, setIsMatching] = useState(false);
 	const [isCreating, setIsCreating] = useState(false);
-	const router = useRouter();
-	const handleMatching = async (
-		token: string,
-		beforeRedirect: () => Promise<void> = async () => {},
-	) => {
+	const handleMatching = async (token: string) => {
 		setIsMatching(true);
 		const id = await roomRepository.match(token);
 		const isDemo = localStorage.getItem("isDemo");
@@ -19,8 +16,7 @@ export const useRoomUseCase = () => {
 			await new Promise((resolve) => setTimeout(resolve, 10000));
 		}
 		setIsMatching(false);
-		await beforeRedirect();
-		router.push(`/rooms/${id}`);
+		return id;
 	};
 	const createRoom = async (data: RESTPostRoomRequest, token: string) => {
 		setIsCreating(true);
