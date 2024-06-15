@@ -28,6 +28,7 @@ type ConnectionStateType = {
   seq: NextSequence;
   life: number;
   attack: Attack[];
+  lostLife: () => void;
 };
 
 const ConnectionState = createContext<ConnectionStateType>({
@@ -43,6 +44,8 @@ const ConnectionState = createContext<ConnectionStateType>({
   },
   life: 0,
   attack: [],
+
+  lostLife: () => {},
 });
 
 const { Provider } = ConnectionState;
@@ -69,7 +72,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
     level: 1,
     type: "default",
   });
-  const [life, setLife] = useState(0);
+  const [life, setLife] = useState(5);
   const [attack, setAttack] = useState<Attack[]>([]);
   const { getOTP } = useRoomUseCase();
   const { token: firebaseToken, user } = useAuthUseCase();
@@ -125,9 +128,9 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
         case "NextSeq":
           setSeq(data.payload);
           break;
-        case "ChangeLife":
-          setLife(data.payload.life);
-          break;
+        // case "ChangeLife":
+        //   setLife(data.payload.life);
+        //   break;
         case "Attack":
           setAttack((prev) => [...prev, data.payload]);
           break;
@@ -150,6 +153,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
         seq,
         life,
         attack,
+        lostLife: () => setLife((prev) => prev - 1),
       }}
     >
       {children}
@@ -167,6 +171,7 @@ export const useConnection = () => {
     connection,
     life,
     attack,
+    lostLife,
   } = useContext(ConnectionState);
   const handleTypingKey = (key: string) => {
     connection?.send(
@@ -185,6 +190,12 @@ export const useConnection = () => {
   const handleStartGame = () => {
     connection?.send(JSON.stringify({ type: "StartGame" }));
   };
+  const [isGameOver, setIsGameOver] = useState(false);
+  useEffect(() => {
+    if (life <= 0) {
+      setIsGameOver(true);
+    }
+  }, [life]);
   return {
     connected,
     usersState: (usersState ?? []).sort((a, b) => a.id.localeCompare(b.id)),
@@ -193,7 +204,9 @@ export const useConnection = () => {
     seq,
     life,
     attack,
+    isGameOver,
     userIDs,
+    lostLife,
     handleStartGame,
     handleTypingKey,
     handleFinishCurrentSequence,

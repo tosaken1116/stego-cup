@@ -109,7 +109,7 @@ const HealEffect = () => {
 
 const Life = ({ life }: { life: number }) => {
   return (
-    <span>
+    <div className="flex flex-row">
       {Array.from({ length: life }).map((_, i) => (
         <Heart
           fill="pink"
@@ -122,6 +122,6 @@ const Life = ({ life }: { life: number }) => {
       {Array.from({ length: 5 - life }).map((_, i) => (
         <Heart className="h-12 w-12 animate-scale" key={3 - i} />
       ))}
-    </span>
+    </div>
   );
 };
