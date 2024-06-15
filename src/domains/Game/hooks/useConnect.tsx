@@ -5,6 +5,7 @@ import {
   type FC,
   type ReactNode,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -157,13 +158,14 @@ export const useConnection = () => {
       JSON.stringify({ type: "TypingKey", payload: { inputSeq: key } })
     );
   };
-  const handleFinishCurrentSequence = (
-    cause: "succeeded" | "failed" | "skipped"
-  ) => {
-    connection?.send(
-      JSON.stringify({ type: "FinCurrentSeq", payload: { cause } })
-    );
-  };
+  const handleFinishCurrentSequence = useCallback(
+    (cause: "succeeded" | "failed" | "skipped") => {
+      connection?.send(
+        JSON.stringify({ type: "FinCurrentSeq", payload: { cause } })
+      );
+    },
+    [connection?.send]
+  );
   const userIDs = usersState?.map((v) => v.id) ?? [];
   const handleStartGame = () => {
     connection?.send(JSON.stringify({ type: "StartGame" }));

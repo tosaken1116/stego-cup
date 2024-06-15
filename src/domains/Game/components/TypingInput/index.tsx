@@ -6,8 +6,20 @@ import { useConnection } from "../../hooks/useConnect";
 export const TypingInput: FC = () => {
   const { seq, handleTypingKey, handleFinishCurrentSequence } = useConnection();
   const [value, setValue] = useState("");
-  const [timeSec, setTimeSec] = useState(0);
   const [keyStreak, setKeyStreak] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(5);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (timeLeft <= 0.05) {
+        handleFinishCurrentSequence("failed");
+        setTimeLeft(5);
+        return;
+      }
+      setTimeLeft((prev) => prev - 0.05);
+    }, 50);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, handleFinishCurrentSequence]);
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key.length > 1) {
@@ -39,35 +51,11 @@ export const TypingInput: FC = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleKeyDown]);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (timeSec >= 5) {
-        handleFinishCurrentSequence("failed");
-        clearInterval(timer);
-      }
-      setTimeSec((prev) => prev + 0.05);
-    }, 50);
-    return () => {
-      clearInterval(timer);
-    };
-  }, [handleFinishCurrentSequence, timeSec]);
   return (
     <span>
       <span className="text-gray-400">{value}</span>
       <span className="text-gray-200">{lestSeq}</span>
-      <div className="relative w-fit">
-        <CircularProgressBar
-          progress={timeSec / 5}
-          className={timeSec > 3 ? "animate-pulse" : ""}
-          style={{
-            animationDuration: `${Math.max(5 - timeSec, 0.2)}s`,
-          }}
-        />
-        <span className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2">
-          {(5 - timeSec).toFixed(2)}s
-        </span>
-        <StreakBar streak={keyStreak} />
-      </div>
+      <Timer time={5 - timeLeft} />
     </span>
   );
 };
@@ -87,6 +75,23 @@ const StreakBar: FC<{ streak: number }> = ({ streak }) => {
           width: `${progress / 20}%`,
         }}
       />
+    </div>
+  );
+};
+
+const Timer: FC<{ time: number }> = ({ time }) => {
+  return (
+    <div className="relative w-fit">
+      <CircularProgressBar
+        progress={time / 5}
+        className={time > 3 ? "animate-pulse" : ""}
+        style={{
+          animationDuration: `${Math.max(5 - time, 0.2)}s`,
+        }}
+      />
+      <span className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2">
+        {(5 - time).toFixed(2)}s
+      </span>
     </div>
   );
 };
