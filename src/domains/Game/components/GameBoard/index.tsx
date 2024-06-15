@@ -6,13 +6,24 @@ import type { Difficult } from "../../types";
 import { TypingInput } from "../TypingInput";
 
 export const GameBoard = () => {
-  const { difficult, life } = useConnection();
+  const { difficult, life, isGameOver } = useConnection();
+  if (isGameOver) {
+    <GameOver />;
+  }
   return (
     <span>
       <DifficultProgress difficult={difficult} />
       <TypingInput />
       <Life life={life} />
     </span>
+  );
+};
+
+const GameOver = () => {
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center">
+      <p className="text-4xl">ゲームオーバー</p>
+    </div>
   );
 };
 

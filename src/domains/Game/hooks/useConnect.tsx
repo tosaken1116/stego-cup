@@ -153,7 +153,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
         seq,
         life,
         attack,
-        lostLife: () => setLife((prev) => prev - 1),
+        lostLife: () => setLife((prev) => Math.max(prev - 1, 0)),
       }}
     >
       {children}
@@ -190,12 +190,7 @@ export const useConnection = () => {
   const handleStartGame = () => {
     connection?.send(JSON.stringify({ type: "StartGame" }));
   };
-  const [isGameOver, setIsGameOver] = useState(false);
-  useEffect(() => {
-    if (life <= 0) {
-      setIsGameOver(true);
-    }
-  }, [life]);
+
   return {
     connected,
     usersState: (usersState ?? []).sort((a, b) => a.id.localeCompare(b.id)),
@@ -204,7 +199,7 @@ export const useConnection = () => {
     seq,
     life,
     attack,
-    isGameOver,
+    isGameOver: life === 0,
     userIDs,
     lostLife,
     handleStartGame,
