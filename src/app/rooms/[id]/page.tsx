@@ -10,7 +10,7 @@ type Props = {
 export default function RoomPage({ params: { id } }: Props) {
 	return (
 		<div className="h-screen w-full">
-			<ConnectionProvider url={`${API_BASE_URL}/rooms/${id}`}>
+			<ConnectionProvider url={`${API_BASE_URL}/api/v1/rooms/${id}`}>
 				<Room />
 			</ConnectionProvider>
 		</div>
