@@ -7,10 +7,11 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import type { Difficult, Room, UserState } from "../types";
+import type { Attack, Difficult, Room, UserState } from "../types";
 import type {
   WSChangeOtherUserStateResponse,
   WSEventToClientKey,
@@ -23,6 +24,7 @@ type ConnectionStateType = {
   difficult: Difficult | null;
   seq: string;
   life: number;
+  attack: Attack[];
 };
 
 const ConnectionState = createContext<ConnectionStateType>({
@@ -33,6 +35,7 @@ const ConnectionState = createContext<ConnectionStateType>({
   difficult: null,
   seq: "",
   life: 0,
+  attack: [],
 });
 
 const { Provider } = ConnectionState;
@@ -56,13 +59,14 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
   const [difficult, setDifficult] = useState<Difficult | null>(null);
   const [seq, setSeq] = useState<string>("");
   const [life, setLife] = useState(0);
+  const [attack, setAttack] = useState<Attack[]>([]);
   const { getOTP } = useRoomUseCase();
   const { token: firebaseToken } = useAuthUseCase();
   useEffect(() => {
     const connect = async () => {
       if (!firebaseToken) return;
       const token = await getOTP(firebaseToken);
-      const newUrl = `${url}?otp=${token}`;
+      const newUrl = `${url}?p=${token}`;
       const ws = new ReconnectingWebSocket(newUrl);
       setConnection(ws);
       ws.onmessage = (e) => {
@@ -96,6 +100,9 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
           case "ChangeLife":
             setLife(data.payload.life);
             break;
+          case "Attack":
+            setAttack((prev) => [...prev, data.payload]);
+            break;
           default:
             break;
         }
@@ -116,6 +123,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
         difficult,
         seq,
         life,
+        attack,
       }}
     >
       {children}
@@ -124,8 +132,16 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
 };
 
 export const useConnection = () => {
-  const { usersState, room, difficult, seq, connected, connection, life } =
-    useContext(ConnectionState);
+  const {
+    usersState,
+    room,
+    difficult,
+    seq,
+    connected,
+    connection,
+    life,
+    attack,
+  } = useContext(ConnectionState);
   const handleTypingKey = (key: string) => {
     connection?.send(JSON.stringify({ type: "TypingKey", payload: { key } }));
   };
@@ -136,6 +152,7 @@ export const useConnection = () => {
       JSON.stringify({ type: "FinCurrentSeq", payload: { cause } })
     );
   };
+  const userIDs = usersState?.map((v) => v.id) ?? [];
 
   return {
     connected,
@@ -144,6 +161,8 @@ export const useConnection = () => {
     difficult,
     seq,
     life,
+    attack,
+    userIDs,
     handleTypingKey,
     handleFinishCurrentSequence,
   };

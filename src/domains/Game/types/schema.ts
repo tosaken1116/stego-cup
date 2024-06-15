@@ -40,4 +40,5 @@ export type WSEventToClientKey =
 	| "ChangeWordDifficult"
 	| "ChangeOtherUserState"
 	| "ChangeRoomState"
-	| "ChangeLife";
+	| "ChangeLife"
+	| "Attack";

@@ -8,7 +8,7 @@ const match = async (token: string): Promise<string> => {
 			Authorization: `Bearer ${token}`,
 		},
 	});
-	const { roomId: id } = await res.json();
+	const { id } = await res.json();
 	return id;
 };
 const create = async (
@@ -23,7 +23,7 @@ const create = async (
 			Authorization: `Bearer ${token}`,
 		},
 	});
-	const { roomId: id } = await res.json();
+	const { id } = await res.json();
 	return id;
 };
 

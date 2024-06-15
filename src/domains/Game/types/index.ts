@@ -32,3 +32,9 @@ export type UserState = {
 	state: "connected" | "disconnected";
 	rank: number | null;
 };
+
+export type Attack = {
+	from: string;
+	to: string;
+	damage: number;
+};
