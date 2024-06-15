@@ -12,7 +12,7 @@ export type WSFinCurrentSeqRequest = {
 };
 
 export type WSNextSeqResponse = {
-	value: string;
+	value: { value: string; level: number };
 	type: "default" | "heal";
 };
 
