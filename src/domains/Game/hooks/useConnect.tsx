@@ -29,6 +29,7 @@ type ConnectionStateType = {
   life: number;
   attack: Attack[];
   lostLife: () => void;
+  popAttack: () => void;
 };
 
 const ConnectionState = createContext<ConnectionStateType>({
@@ -46,6 +47,7 @@ const ConnectionState = createContext<ConnectionStateType>({
   attack: [],
 
   lostLife: () => {},
+  popAttack: () => {},
 });
 
 const { Provider } = ConnectionState;
@@ -153,6 +155,9 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
         seq,
         life,
         attack,
+        popAttack: () => {
+          setAttack((prev) => prev.slice(1));
+        },
         lostLife: () => setLife((prev) => Math.max(prev - 1, 0)),
       }}
     >
@@ -172,6 +177,7 @@ export const useConnection = () => {
     life,
     attack,
     lostLife,
+    popAttack,
   } = useContext(ConnectionState);
   const handleTypingKey = (key: string) => {
     connection?.send(
@@ -201,6 +207,7 @@ export const useConnection = () => {
     attack,
     isGameOver: life === 0,
     userIDs,
+    popAttack,
     lostLife,
     handleStartGame,
     handleTypingKey,

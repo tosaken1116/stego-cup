@@ -1,4 +1,5 @@
 import { useAuthUseCase } from "@/domains/Auth/usecase";
+import { useConnection } from "../../hooks/useConnect";
 import type { Attack as AttackType, UserState } from "../../types";
 import { AttackEffect } from "../AttackEffect";
 type Position = {
@@ -35,6 +36,7 @@ export const Attack = ({
   userIDs: UserState["id"][];
 }) => {
   const { user } = useAuthUseCase();
+  const { popAttack } = useConnection();
   const items = attack
     .map((a) => {
       const attacker =
@@ -56,5 +58,5 @@ export const Attack = ({
       };
     })
     .filter((a): a is NonNullable<typeof a> => a !== null);
-  return <AttackEffect items={items} />;
+  return <AttackEffect items={items} deleteAnimate={popAttack} />;
 };
