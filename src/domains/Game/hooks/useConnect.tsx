@@ -116,7 +116,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
     return () => {
       connection?.close();
     };
-  }, [firebaseToken, connection?.close, getOTP, url]);
+  }, [firebaseToken, connection?.close]);
   return (
     <Provider
       value={{
