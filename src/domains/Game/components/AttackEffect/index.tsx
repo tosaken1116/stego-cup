@@ -32,6 +32,8 @@ const Item: FC<ItemProps> = ({ x, y, endX, endY }) => {
 				{
 					"--target-x": `${endX}px`,
 					"--target-y": `${endY}px`,
+					"--source-x": `${x}px`,
+					"--source-y": `${y}px`,
 				} as CSSProperties
 			}
 		>

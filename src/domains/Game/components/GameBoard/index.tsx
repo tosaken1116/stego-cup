@@ -119,7 +119,7 @@ const Life = ({ life }: { life: number }) => {
           key={i}
         />
       ))}
-      {Array.from({ length: 3 - life }).map((_, i) => (
+      {Array.from({ length: 5 - life }).map((_, i) => (
         <Heart className="h-12 w-12 animate-scale" key={3 - i} />
       ))}
     </span>

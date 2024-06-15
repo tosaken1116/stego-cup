@@ -181,7 +181,8 @@ const config = {
 				},
 				"move-to-target": {
 					"0%": {
-						transform: "translateX(0) translateY(0)",
+						left: "var(--source-x)",
+						top: "var(--source-y)",
 						opacity: "0",
 					},
 					"10%": {
@@ -191,8 +192,8 @@ const config = {
 						opacity: "1",
 					},
 					"100%": {
-						transform:
-							"translateX(var(--target-x)) translateY(var(--target-y))",
+						left: "var(--target-x)",
+						top: "var(--target-y)",
 						opacity: "0",
 					},
 				},
