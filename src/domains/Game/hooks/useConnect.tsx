@@ -88,12 +88,11 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
             break;
           case "ChangeOtherUserState":
             setUsersState((prev) => ({
-              ...Object.fromEntries(
-                Object.values(
-                  data.payload as WSChangeOtherUserStateResponse
-                ).map((v) => [v.id, v])
-              ),
-              ...(prev ?? {}),
+              ...prev,
+              [data.payload.id]: {
+                ...prev?.[data.payload.id],
+                ...data.payload,
+              },
             }));
             break;
           case "ChangeWordDifficult":
@@ -117,7 +116,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
     return () => {
       connection?.close();
     };
-  }, [firebaseToken]);
+  }, [firebaseToken, connection?.close, getOTP, url]);
   return (
     <Provider
       value={{

@@ -29,9 +29,8 @@ export type WSChangeOtherUserStateResponse = {
 	life: number;
 	seq: string;
 	inputSeq: string;
-	state: "connected" | "disconnected";
 	rank: number | null;
-}[];
+};
 
 export type WSChangeRoomResponse = WSJoinRoomResponse;
 
