@@ -104,11 +104,14 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
           }));
           break;
         case "ChangeOtherUsersState": {
-          const users = data.payload;
-          const userObject = users.reduce((acc, user) => {
-            acc[user.id] = user;
-            return acc;
-          }, {});
+          const users = data.payload as UserState[];
+          const userObject: Record<string, UserState> = users.reduce(
+            (acc, user) => {
+              acc[user.id] = user;
+              return acc;
+            },
+            {} as Record<string, UserState>
+          );
           setUsersState(userObject);
           break;
         }
