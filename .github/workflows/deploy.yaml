@@ -24,18 +24,23 @@ jobs:
         with:
           workload_identity_provider: '${{secrets.WIF_PROVIDER}}'
           service_account: '${{secrets.WIF_SERVICE_ACCOUNT}}'
-          
+
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
         with:
           version: '>= 379.0.0'
-          
+
       - name: 'Docker auth'
         run: |-
           gcloud auth configure-docker ${{env.REGION}}-docker.pkg.dev
-      
+
       - name: 'Build and push container'
         run: |-
+          touch .env
+          echo "NEXT_PUBLIC_PROD_AUTH_API_KEY=${{secrets.NEXT_PUBLIC_PROD_AUTH_API_KEY}}" >> .env
+          echo "NEXT_PUBLIC_PROD_AUTH_DOMAIN=${{secrets.NEXT_PUBLIC_PROD_AUTH_DOMAIN}}" >> .env
+          echo "NEXT_PUBLIC_PROD_API_BASE_URL=${{secrets.NEXT_PUBLIC_PROD_API_BASE_URL}}" >> .env
+          echo "NEXT_PUBLIC_PROD_WS_BASE_URL=${{secrets.NEXT_PUBLIC_PROD_WS_BASE_URL}}" >> .env
           docker build -t "${{env.REGION}}-docker.pkg.dev/${{secrets.PROJECT_ID}}/${{env.ARTIFACT_REGISTRY}}/${{env.APP_NAME}}:${{github.sha}}" .
           docker push "${{env.REGION}}-docker.pkg.dev/${{secrets.PROJECT_ID}}/${{env.ARTIFACT_REGISTRY}}/${{env.APP_NAME}}:${{github.sha}}"
 
