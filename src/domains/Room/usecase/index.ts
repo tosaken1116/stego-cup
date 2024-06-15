@@ -1,6 +1,6 @@
 import { useAuthUseCase } from "@/domains/Auth/usecase";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { roomRepository } from "../repository";
 import type { RESTPostRoomRequest } from "../types/schema";
 
@@ -28,10 +28,10 @@ export const useRoomUseCase = () => {
 		setIsCreating(false);
 		router.push(`/rooms/${id}`);
 	};
-	const getOTP = async (token: string) => {
+	const getOTP = useCallback(async (token: string) => {
 		const otp = await roomRepository.getOtp(token);
 		return otp;
-	};
+	}, []);
 	return {
 		isMatching,
 		isCreating,

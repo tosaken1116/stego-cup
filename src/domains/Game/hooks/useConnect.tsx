@@ -72,53 +72,57 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
   const [attack, setAttack] = useState<Attack[]>([]);
   const { getOTP } = useRoomUseCase();
   const { token: firebaseToken } = useAuthUseCase();
+  const [otp, setOTP] = useState<string>("");
   useEffect(() => {
-    const connect = async () => {
-      if (!firebaseToken) return;
-      const token = await getOTP(firebaseToken);
-      const newUrl = `${url}?p=${token}`;
-      const ws = new ReconnectingWebSocket(newUrl);
-      setConnection(ws);
-      ws.onmessage = (e) => {
-        const data = JSON.parse(e.data);
-        switch (data.type as WSEventToClientKey) {
-          case "ChangeRoomState":
-            if (data.payload.status === "finish") {
-              ws.close();
-            }
-            setRoom(data.payload);
-            break;
-          case "ChangeOtherUserState":
-            setUsersState((prev) => ({
-              ...prev,
-              [data.payload.id]: {
-                ...prev?.[data.payload.id],
-                ...data.payload,
-              },
-            }));
-            break;
-          case "ChangeWordDifficult":
-            setDifficult(data.payload);
-            break;
-          case "NextSeq":
-            setSeq(data.payload);
-            break;
-          case "ChangeLife":
-            setLife(data.payload.life);
-            break;
-          case "Attack":
-            setAttack((prev) => [...prev, data.payload]);
-            break;
-          default:
-            break;
-        }
-      };
+    if (!firebaseToken) return;
+    const get = async () => {
+      const otp = await getOTP(firebaseToken);
+      setOTP(otp);
     };
-    connect();
+    get();
+  }, [firebaseToken, getOTP]);
+  useEffect(() => {
+    const newUrl = `${url}?p=${otp}`;
+    const ws = new ReconnectingWebSocket(newUrl);
+    setConnection(ws);
+    ws.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      switch (data.type as WSEventToClientKey) {
+        case "ChangeRoomState":
+          if (data.payload.status === "finish") {
+            ws.close();
+          }
+          setRoom(data.payload);
+          break;
+        case "ChangeOtherUserState":
+          setUsersState((prev) => ({
+            ...prev,
+            [data.payload.id]: {
+              ...prev?.[data.payload.id],
+              ...data.payload,
+            },
+          }));
+          break;
+        case "ChangeWordDifficult":
+          setDifficult(data.payload);
+          break;
+        case "NextSeq":
+          setSeq(data.payload);
+          break;
+        case "ChangeLife":
+          setLife(data.payload.life);
+          break;
+        case "Attack":
+          setAttack((prev) => [...prev, data.payload]);
+          break;
+        default:
+          break;
+      }
+    };
     return () => {
-      connection?.close();
+      ws.close();
     };
-  }, [firebaseToken, connection?.close]);
+  }, [otp, url]);
   return (
     <Provider
       value={{
