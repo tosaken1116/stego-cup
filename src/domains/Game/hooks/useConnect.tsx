@@ -99,11 +99,19 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
           setUsersState((prev) => ({
             ...prev,
             [data.payload.id]: {
-              ...prev?.[data.payload.id],
               ...data.payload,
             },
           }));
           break;
+        case "ChangeOtherUsersState": {
+          const users = data.payload;
+          const userObject = users.reduce((acc, user) => {
+            acc[user.id] = user;
+            return acc;
+          }, {});
+          setUsersState(userObject);
+          break;
+        }
         case "ChangeWordDifficult":
           setDifficult(data.payload);
           break;
