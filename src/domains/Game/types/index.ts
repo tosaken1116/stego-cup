@@ -26,6 +26,12 @@ export type Difficult = {
 	cause: "heal" | "damage" | "";
 };
 
+export type Result = {
+	userId: string;
+	rank: number;
+	displayName: string;
+}[];
+
 export type UserState = {
 	id: string;
 	name: string;

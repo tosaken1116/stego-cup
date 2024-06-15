@@ -3,7 +3,7 @@ import CircularProgressBar from "@/components/ui/progress";
 import { useAuthUseCase } from "@/domains/Auth/usecase";
 import { cn } from "@/lib/utils";
 import type { User } from "firebase/auth";
-import { LoaderCircle } from "lucide-react";
+import { Crown, LoaderCircle } from "lucide-react";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { UserTypingState } from "../../../Game/components/UserTypingState";
 import { useConnection } from "../../../Game/hooks/useConnect";
@@ -18,7 +18,7 @@ export const Room = () => {
 		}, 500);
 		return () => clearInterval(interval);
 	}, []);
-	if (!connected) {
+	if (!connected && room === null) {
 		return (
 			<div className="flex h-full w-full flex-col items-center justify-center">
 				<LoaderCircle className="h-32 w-32 animate-spin" />
@@ -149,10 +149,42 @@ const PlayingRoom = () => {
 };
 
 const FinishRoom = () => {
+	const { result } = useConnection();
+	const { user } = useAuthUseCase();
 	return (
 		<div>
-			<h1>終了</h1>
-			<div>結果</div>
+			<h1>ゲーム終了</h1>
+			<div>
+				{result.map((r, i) => (
+					<div
+						key={i}
+						className={cn("flex w-full flex-row rounded-sm border-primary/50", {
+							"bg-primary": r.userId === user?.uid,
+							"bg-yellow-500": r.rank === 1,
+							"bg-slate-500": r.rank === 2,
+							"bg-orange-700": r.rank === 3,
+						})}
+					>
+						<span className="relative">
+							{(r.rank === 1 || r.rank === 2 || r.rank === 3) && (
+								<Crown
+									className={cn(
+										"-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2",
+										{
+											"text-yellow-500": r.rank === 1,
+											"text-slate-500": r.rank === 2,
+											"text-orange-700": r.rank === 3,
+										},
+									)}
+								/>
+							)}
+							{r.rank}
+						</span>
+						<span>{r.displayName}</span>
+						<span>{r.userId}</span>
+					</div>
+				))}
+			</div>
 		</div>
 	);
 };

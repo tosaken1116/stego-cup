@@ -33,6 +33,12 @@ export type WSChangeOtherUserStateResponse = {
 	rank: number | null;
 };
 
+export type WSResultResponse = {
+	userId: string;
+	rank: number;
+	displayName: string;
+}[];
+
 export type WSChangeRoomResponse = WSJoinRoomResponse;
 
 export type WSEventToClientKey =
@@ -42,4 +48,5 @@ export type WSEventToClientKey =
 	| "ChangeRoomState"
 	| "ChangeLife"
 	| "Attack"
-	| "ChangeOtherUsersState";
+	| "ChangeOtherUsersState"
+	| "Result";
