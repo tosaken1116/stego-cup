@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config = {
 	darkMode: ["class"],
@@ -135,6 +136,51 @@ const config = {
 					"50%": { transform: "translateY(-20px)" },
 					"100%": { transform: "translateY(0)" },
 				},
+				"slide-in-tr": {
+					"0%": {
+						transform: "translateY(-1000px) translateX(1000px)",
+						opacity: "0",
+					},
+					to: {
+						transform: "translateY(0) translateX(0)",
+						opacity: "1",
+					},
+				},
+				"slide-out-tr": {
+					"0%": {
+						transform: "translateY(0) translateX(0)",
+						opacity: "1",
+					},
+					to: {
+						transform: "translateY(-1000px) translateX(1000px)",
+						opacity: "0",
+					},
+				},
+				"puff-out-hor": {
+					"0%": {
+						transform: "scaleX(1)",
+						filter: "blur(0)",
+						opacity: "1",
+					},
+					to: {
+						transform: "scaleX(2)",
+						filter: "blur(2px)",
+						opacity: "0",
+					},
+				},
+				"slide-in": {
+					from: {
+						transform: "translateX(100%)",
+						opacity: "0",
+					},
+					to: {
+						transform: "translateX(0)",
+						opacity: "1",
+					},
+				},
+			},
+			transitionDelay: {
+				"1500": "1500ms",
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -147,10 +193,64 @@ const config = {
 				"fade-in-up": "fade-in-up 1s ease-out forwards",
 				expand: "expand 0.3s ease-out",
 				"jump-up": "jump-up 1s ease-out infinite",
+				"slide-in-tr":
+					"slide-in-tr 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)",
+				"slide-out-tr":
+					"slide-out-tr 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530)",
+				"puff-out-hor":
+					"puff-out-hor 0.9s cubic-bezier(0.165, 0.840, 0.440, 1.000)   both",
+				"slide-in": "slide-in 0.5s ease-out",
 			},
 		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		plugin(({ matchUtilities, theme }) => {
+			matchUtilities(
+				{
+					"text-stroke": (value) => ({
+						"-webkit-text-stroke-width": value,
+						"text-stroke-width": value,
+					}),
+				},
+				{
+					type: "length",
+					values: {
+						px: "1px",
+					},
+				},
+			);
+			matchUtilities(
+				{
+					"text-stroke": (value) => ({
+						"-webkit-text-stroke-color": value,
+						"text-stroke-color": value,
+					}),
+				},
+				{
+					type: "color",
+					values: theme("colors"),
+				},
+			);
+			matchUtilities(
+				{
+					"font-style-oblique": (value) => ({
+						"font-style": `oblique ${value}`,
+					}),
+				},
+				{
+					type: "length",
+					values: {
+						"10": "10deg",
+						"30": "30deg",
+						"45": "45deg",
+						"60": "60deg",
+						"90": "90deg",
+					},
+				},
+			);
+		}),
+	],
 } satisfies Config;
 
 export default config;
