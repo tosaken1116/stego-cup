@@ -1,13 +1,62 @@
-export const withSound = (Component: React.ComponentType, fileName: string) => {
+"use client";
+import Head from "next/head";
+import { type ComponentType, useEffect, useRef } from "react";
+
+export const withClickSound = (
+	Component: React.ComponentType,
+	fileName: string,
+) => {
 	return () => {
-		const audio = new Audio(`audio/${fileName}`);
+		const audioRef = useRef<HTMLAudioElement | null>(null);
+
+		useEffect(() => {
+			audioRef.current = new Audio(`audio/${fileName}`);
+		}, [fileName]);
+
 		const play = () => {
-			audio.play();
+			if (audioRef.current) {
+				audioRef.current.play();
+			}
 		};
+
 		return (
-			<button type="button" onClick={play}>
+			<div onClick={play}>
 				<Component />
-			</button>
+			</div>
+		);
+	};
+};
+
+export const withHoverSound = (Component: ComponentType, fileName: string) => {
+	return () => {
+		const audioRef = useRef<HTMLAudioElement | null>(null);
+
+		const play = () => {
+			if (audioRef.current) {
+				audioRef.current.play();
+			}
+		};
+
+		useEffect(() => {
+			audioRef.current = new Audio(`audio/${fileName}`);
+		}, [fileName]);
+		return (
+			<>
+				<Head>
+					<link rel="preload" href={`audio/${fileName}`} as="audio" />
+				</Head>
+				<div
+					onMouseEnter={play}
+					onMouseLeave={() => {
+						if (audioRef.current) {
+							audioRef.current.pause();
+							audioRef.current.currentTime = 0;
+						}
+					}}
+				>
+					<Component />
+				</div>
+			</>
 		);
 	};
 };
