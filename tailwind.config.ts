@@ -1,3 +1,4 @@
+import { transform } from "next/dist/build/swc";
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
@@ -195,6 +196,105 @@ const config = {
 						opacity: "0",
 					},
 				},
+				"drop-1": {
+					"0%": {
+						transform: "translateY(0%)",
+					},
+					"37%": {
+						transform: "translateY(0%)",
+					},
+					"43%": {
+						transform: "translateY(100%)",
+					},
+					"100%": {
+						transform: "translateY(100%)",
+					},
+				},
+				"drop-2": {
+					"0%": {
+						transform: "translateY(0%)",
+					},
+					"47%": {
+						transform: "translateY(0%)",
+					},
+					"53%": {
+						transform: "translateY(100%)",
+					},
+					"100%": {
+						transform: "translateY(100%)",
+					},
+				},
+				"drop-3": {
+					"0%": {
+						transform: "translateY(0%)",
+					},
+					"57%": {
+						transform: "translateY(0%)",
+					},
+					"63%": {
+						transform: "translateY(100%)",
+					},
+					"100%": {
+						transform: "translateY(100%)",
+					},
+				},
+				"drop-4": {
+					"0%": {
+						transform: "translateY(0%)",
+					},
+					"67%": {
+						transform: "translateY(0%)",
+					},
+					"73%": {
+						transform: "translateY(100%)",
+					},
+					"100%": {
+						transform: "translateY(100%)",
+					},
+				},
+				"drop-slide": {
+					"0%": {
+						transform: "translateX(-100%)",
+					},
+					"20%": {
+						transform: "translateX(-20%)",
+					},
+					"30%": {
+						transform: "translateX(-20%)",
+					},
+					"37%": {
+						transform: "translateX(-10%)",
+					},
+					"43%": {
+						transform: "translateX(-10%)",
+					},
+					"47%": {
+						transform: "translateX(0%)",
+					},
+					"53%": {
+						transform: "translateX(0%)",
+					},
+
+					"57%": {
+						transform: "translateX(10%)",
+					},
+					"63%": {
+						transform: "translateX(10%)",
+					},
+					"68%": {
+						transform: "translateX(20%)",
+					},
+
+					"70%": {
+						transform: "translateX(20%)",
+					},
+					"80%": {
+						transform: "translateX(20%)",
+					},
+					"100%": {
+						transform: "translateX(100%)",
+					},
+				},
 			},
 			transitionDelay: {
 				"1500": "1500ms",
@@ -218,6 +318,11 @@ const config = {
 					"puff-out-hor 0.9s cubic-bezier(0.165, 0.840, 0.440, 1.000)   both",
 				"slide-in": "slide-in 0.5s ease-out",
 				"move-to-target": "move-to-target 0.5s ease-out",
+				"drop-slide": "drop-slide 4s linear infinite",
+				"drop-1": "drop-1 4s ease-in-out",
+				"drop-2": "drop-2 4s ease-in-out",
+				"drop-3": "drop-3 4s ease-in-out",
+				"drop-4": "drop-4 4s ease-in-out",
 			},
 		},
 	},

@@ -4,7 +4,7 @@ export const useAudio = (fileName: string) => {
 	const audioRef = useRef<HTMLAudioElement | null>(null);
 
 	useEffect(() => {
-		audioRef.current = new Audio(`audio/${fileName}`);
+		audioRef.current = new Audio(`/audio/${fileName}`);
 	}, [fileName]);
 
 	const play = () => {
