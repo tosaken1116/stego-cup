@@ -11,7 +11,7 @@ const match = async (): Promise<string> => {
 			Authorization: `Bearer ${token}`,
 		},
 	});
-	const { id } = await res.json();
+	const { roomId: id } = await res.json();
 	return id;
 };
 const create = async (props: RESTPostRoomRequest): Promise<string> => {
@@ -24,10 +24,28 @@ const create = async (props: RESTPostRoomRequest): Promise<string> => {
 			Authorization: `Bearer ${token}`,
 		},
 	});
-	const { id } = await res.json();
+	const { roomId: id } = await res.json();
 	return id;
+};
+
+const getOtp = async (): Promise<string> => {
+	const token = await getToken();
+	try {
+		const res = await fetch(`${API_BASE_URL}/api/v1/otp`, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const { otp } = await res.json();
+		return otp;
+	} catch (e) {
+		console.log(e);
+		return "";
+	}
 };
 export const roomRepository = {
 	match,
 	create,
+	getOtp,
 } as const;
