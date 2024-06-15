@@ -3,6 +3,8 @@ export type Room = {
 	status: "pending" | "playing" | "finish" | "matched";
 	ownerId: string;
 	startedAt: number;
+	maxUserNum: number;
+	minUserNum: number;
 };
 
 export type TypingKey = {
@@ -21,9 +23,7 @@ export type NextSequence = {
 
 export type Difficult = {
 	difficult: number;
-	progress: number;
-	cause: "heal" | "damage";
-	from: "user-id" | undefined;
+	cause: "heal" | "damage" | "";
 };
 
 export type UserState = {
