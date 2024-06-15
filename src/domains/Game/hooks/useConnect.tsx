@@ -1,4 +1,5 @@
 "use client";
+import { useAuthUseCase } from "@/domains/Auth/usecase";
 import { useRoomUseCase } from "@/domains/Room/usecase";
 import {
   type FC,
@@ -56,9 +57,11 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
   const [seq, setSeq] = useState<string>("");
   const [life, setLife] = useState(0);
   const { getOTP } = useRoomUseCase();
+  const { token: firebaseToken } = useAuthUseCase();
   useEffect(() => {
     const connect = async () => {
-      const token = await getOTP();
+      if (!firebaseToken) return;
+      const token = await getOTP(firebaseToken);
       const newUrl = `${url}?otp=${token}`;
       const ws = new ReconnectingWebSocket(newUrl);
       setConnection(ws);
@@ -102,7 +105,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
     return () => {
       connection?.close();
     };
-  }, []);
+  }, [firebaseToken]);
   return (
     <Provider
       value={{

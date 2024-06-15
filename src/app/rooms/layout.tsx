@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-	title: "トップ画面 | タイピング99 ",
+  title: "トップ画面 | タイピング99 ",
 };
 
-export default function RootLayout({
-	children,
+export default function Layout({
+  children,
 }: Readonly<{
-	children: ReactNode;
+  children: ReactNode;
 }>) {
-	return <div className="bg-black/70">{children}</div>;
+  return <div className="bg-black/70">{children}</div>;
 }

@@ -1,11 +1,8 @@
 import { API_BASE_URL } from "@/constants";
-import { getToken } from "@/domains/Auth/usecase";
 import { headers } from "next/headers";
 import type { RESTPostRoomRequest } from "../types/schema";
 
-const match = async (): Promise<string> => {
-	const token = await getToken();
-
+const match = async (token: string): Promise<string> => {
 	const res = await fetch(`${API_BASE_URL}/api/v1/rooms/matching`, {
 		headers: {
 			Authorization: `Bearer ${token}`,
@@ -14,8 +11,10 @@ const match = async (): Promise<string> => {
 	const { roomId: id } = await res.json();
 	return id;
 };
-const create = async (props: RESTPostRoomRequest): Promise<string> => {
-	const token = await getToken();
+const create = async (
+	props: RESTPostRoomRequest,
+	token: string,
+): Promise<string> => {
 	const res = await fetch(`${API_BASE_URL}/api/v1/rooms`, {
 		method: "POST",
 		body: JSON.stringify(props),
@@ -28,8 +27,7 @@ const create = async (props: RESTPostRoomRequest): Promise<string> => {
 	return id;
 };
 
-const getOtp = async (): Promise<string> => {
-	const token = await getToken();
+const getOtp = async (token: string): Promise<string> => {
 	try {
 		const res = await fetch(`${API_BASE_URL}/api/v1/otp`, {
 			method: "POST",
