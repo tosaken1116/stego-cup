@@ -11,30 +11,30 @@ import type { ReactNode } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ログイン | タイピング99 ",
-  description:
-    "タイピング99のログインページです。\n匿名ユーザーでログインして、すぐに対戦を楽しもう！",
+	title: "ログイン | タイピング99 ",
+	description:
+		"タイピング99のログインページです。\n匿名ユーザーでログインして、すぐに対戦を楽しもう！",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: ReactNode;
+	children: ReactNode;
 }>) {
-  return (
-    <html lang="ja">
-      <body className={cn(inter.className, "bg-black text-white")}>
-        <Header />
-        <div className="absolute top-0 left-0 h-screen w-full">
-          <Image
-            src="/image/key.avif"
-            fill
-            alt=""
-            className="-z-10 h-full w-full"
-          />
-        </div>
-        <WithAuth>{children}</WithAuth>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="ja">
+			<body className={cn(inter.className, "bg-black text-white")}>
+				<Header />
+				<div className="absolute top-0 left-0 h-screen w-full">
+					<Image
+						src="/image/key.avif"
+						fill
+						alt=""
+						className="-z-10 h-full w-full"
+					/>
+				</div>
+				<WithAuth>{children}</WithAuth>
+			</body>
+		</html>
+	);
 }

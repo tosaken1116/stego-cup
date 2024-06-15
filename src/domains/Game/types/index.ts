@@ -1,5 +1,5 @@
 export type Room = {
-	userNumber: number;
+	userNum: number;
 	status: "pending" | "playing" | "finish" | "matched";
 };
 

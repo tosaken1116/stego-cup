@@ -36,11 +36,11 @@ export const Room = () => {
 };
 
 const PendingRoom = ({
-	userNumber,
+	userNum,
 	isMatched,
 }: RoomType & { isMatched: boolean }) => {
 	return (
-		<div className="flex flex-col items-center">
+		<div className="flex h-full w-full flex-col items-center">
 			{!isMatched ? (
 				<h1
 					className={cn("font-bold text-xl", {
@@ -53,14 +53,14 @@ const PendingRoom = ({
 				<FinishMatching />
 			)}
 			<CircularProgressBar
-				progress={userNumber / 99}
+				progress={userNum / 99}
 				className={
-					Math.round((userNumber / 99) * 100) === 100 ? "animate-fade-out" : ""
+					Math.round((userNum / 99) * 100) === 100 ? "animate-fade-out" : ""
 				}
 			/>
 			<div className="mt-4 text-center">
 				<p className="text-gray-500 text-sm">参加人数</p>
-				<p className="font-bold text-xl">{`${userNumber} 人`}</p>
+				<p className="font-bold text-xl">{`${userNum} 人`}</p>
 			</div>
 			<p className={isMatched ? "" : "opacity-0"}>もうすぐ始まります</p>
 		</div>

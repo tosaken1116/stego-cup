@@ -1,5 +1,5 @@
 export type WSJoinRoomResponse = {
-	userNumber: number;
+	userNum: number;
 	status: "pending" | "playing" | "finish";
 };
 
