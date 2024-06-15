@@ -9,10 +9,11 @@ export const useRoomUseCase = () => {
 	const [isCreating, setIsCreating] = useState(false);
 	const router = useRouter();
 	const handleMatching = async (
+		token: string,
 		beforeRedirect: () => Promise<void> = async () => {},
 	) => {
 		setIsMatching(true);
-		const id = await roomRepository.match(token ?? "");
+		const id = await roomRepository.match(token);
 		const isDemo = localStorage.getItem("isDemo");
 		if (isDemo) {
 			await new Promise((resolve) => setTimeout(resolve, 10000));
@@ -21,7 +22,7 @@ export const useRoomUseCase = () => {
 		await beforeRedirect();
 		router.push(`/rooms/${id}`);
 	};
-	const createRoom = async (data: RESTPostRoomRequest) => {
+	const createRoom = async (data: RESTPostRoomRequest, token: string) => {
 		setIsCreating(true);
 		const id = await roomRepository.create(data, token);
 		const isDemo = localStorage.getItem("isDemo");

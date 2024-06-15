@@ -1,5 +1,4 @@
 import { AUTH_API_KEY, AUTH_DOMAIN } from "@/constants/auth";
-import { unsubscribe } from "diagnostics_channel";
 import { initializeApp } from "firebase/app";
 
 import {
