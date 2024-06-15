@@ -15,7 +15,6 @@ export const TypingInput: FC = () => {
       }
       setValue((prev) => {
         setKeyStreak((prev) => {
-          console.log(prev);
           return prev + 1;
         });
         const newValue = prev + e.key;
