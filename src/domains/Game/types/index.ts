@@ -15,6 +15,7 @@ export type FinishCurrentSequence = {
 
 export type NextSequence = {
 	value: string;
+	level: number;
 	type: "default" | "heal";
 };
 

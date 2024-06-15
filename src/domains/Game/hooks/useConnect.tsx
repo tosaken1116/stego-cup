@@ -10,21 +10,21 @@ import {
   useState,
 } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import type { Attack, Difficult, Room, UserState } from "../types";
 import type {
-  WSChangeOtherUserStateResponse,
-  WSEventToClientKey,
-} from "../types/schema";
+  Attack,
+  Difficult,
+  NextSequence,
+  Room,
+  UserState,
+} from "../types";
+import type { WSEventToClientKey } from "../types/schema";
 type ConnectionStateType = {
   connected: boolean;
   connection: ReconnectingWebSocket | null;
   usersState: UserState[] | null;
   room: Room | null;
   difficult: Difficult | null;
-  seq: {
-    value: string;
-    level: number;
-  };
+  seq: NextSequence;
   life: number;
   attack: Attack[];
 };
@@ -38,6 +38,7 @@ const ConnectionState = createContext<ConnectionStateType>({
   seq: {
     value: "",
     level: 1,
+    type: "default",
   },
   life: 0,
   attack: [],
@@ -62,10 +63,11 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
   > | null>(null);
   const [room, setRoom] = useState<Room | null>(null);
   const [difficult, setDifficult] = useState<Difficult | null>(null);
-  const [seq, setSeq] = useState<{
-    value: string;
-    level: number;
-  }>({ value: "", level: 1 });
+  const [seq, setSeq] = useState<NextSequence>({
+    value: "",
+    level: 1,
+    type: "default",
+  });
   const [life, setLife] = useState(0);
   const [attack, setAttack] = useState<Attack[]>([]);
   const { getOTP } = useRoomUseCase();
@@ -99,7 +101,7 @@ export const ConnectionProvider: FC<ConnectionProviderProps> = ({
             setDifficult(data.payload);
             break;
           case "NextSeq":
-            setSeq(data.payload.value);
+            setSeq(data.payload);
             break;
           case "ChangeLife":
             setLife(data.payload.life);
