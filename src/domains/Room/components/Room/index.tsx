@@ -2,6 +2,7 @@
 import { time } from "console";
 import CircularProgressBar from "@/components/ui/progress";
 import { useAuthUseCase } from "@/domains/Auth/usecase";
+import { useAudio } from "@/hooks/audio";
 import { cn } from "@/lib/utils";
 import type { User } from "firebase/auth";
 import { set } from "firebase/database";
@@ -82,8 +83,20 @@ const Countdown = ({ children }: { children: ReactNode }) => {
       >
         {countdown}
       </strong>
+      <CountDownAudio />
     </div>
   );
+};
+
+const CountDownAudio = () => {
+  const { play } = useAudio("beep.mp3");
+  useEffect(() => {
+    const interval = setInterval(() => {
+      play();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+  return null;
 };
 
 const PendingRoom = ({
