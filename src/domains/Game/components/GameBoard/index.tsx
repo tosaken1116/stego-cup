@@ -36,6 +36,7 @@ const DifficultProgress = ({
 		heal: false,
 		damage: false,
 	});
+	console.log(difficult);
 	const level = Math.floor(difficult?.difficult ?? 0 / 100);
 	const progress = difficult?.difficult ?? 0 % 100;
 	useEffect(() => {

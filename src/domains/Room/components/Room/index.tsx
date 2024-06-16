@@ -152,24 +152,24 @@ const FinishRoom = () => {
 	const { result } = useConnection();
 	const { user } = useAuthUseCase();
 	return (
-		<div>
-			<h1>ゲーム終了</h1>
-			<div>
+		<div className="flex h-screen w-full flex-col items-center justify-center">
+			<h1 className="text-4xl">ゲーム終了</h1>
+			<div className="flex h-1/2 max-h-96 flex-col gap-4 overflow-scroll">
 				{result.map((r, i) => (
 					<div
 						key={i}
-						className={cn("flex w-full flex-row rounded-sm border-primary/50", {
-							"bg-primary": r.userId === user?.uid,
-							"bg-yellow-500": r.rank === 1,
-							"bg-slate-500": r.rank === 2,
-							"bg-orange-700": r.rank === 3,
+						className={cn("flex w-full flex-row rounded-sm p-4", {
+							"border-2 border-primary": r.userId === user?.uid,
+							"bg-yellow-500/50": r.rank === 1,
+							"bg-slate-500/50": r.rank === 2,
+							"bg-orange-700/50": r.rank === 3,
 						})}
 					>
-						<span className="relative">
+						<span className="relative mr-3 ml-2">
 							{(r.rank === 1 || r.rank === 2 || r.rank === 3) && (
 								<Crown
 									className={cn(
-										"-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2",
+										"-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-8 w-8",
 										{
 											"text-yellow-500": r.rank === 1,
 											"text-slate-500": r.rank === 2,
