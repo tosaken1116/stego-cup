@@ -8,7 +8,7 @@ import { TypingInput } from "../TypingInput";
 
 export const GameBoard = () => {
   const { difficult, life } = useConnection();
-  if (life === 0) {
+  if (life <= 0) {
     <GameOver />;
   }
   return (
