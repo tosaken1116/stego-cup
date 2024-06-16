@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import type { User } from "firebase/auth";
 import { set } from "firebase/database";
 import { Crown, LoaderCircle } from "lucide-react";
+import Link from "next/link";
 import {
   type ReactNode,
   useCallback,
@@ -238,6 +239,7 @@ const FinishRoom = () => {
           </div>
         ))}
       </div>
+      <Link href="/rooms">ホームに戻る</Link>
     </div>
   );
 };
