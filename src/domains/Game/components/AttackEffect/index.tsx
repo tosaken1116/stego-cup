@@ -1,5 +1,6 @@
 "use client";
 import { useAudio } from "@/hooks/audio";
+import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
 import { type CSSProperties, type FC, useEffect, useState } from "react";
 
@@ -23,6 +24,17 @@ const getRandomOffset = (distanceX: number, distanceY: number) => {
     x: Math.cos(finalAngle) * distance,
     y: Math.sin(finalAngle) * distance,
   };
+};
+const getRandomColor = (i: number): string => {
+  const index = Math.min(Math.max(i, 0), 20);
+  const saturation =
+    index < 10 ? 10 + Math.random() * 20 : 80 + Math.random() * 20;
+  const lightness =
+    index < 10 ? 80 + Math.random() * 20 : 50 + Math.random() * 10;
+  const hueRange = 360 / (index + 1);
+  const baseHue = Math.random() * 360;
+  const hue = (baseHue + Math.random() * hueRange) % 360;
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 };
 const Item: FC<
   ItemProps & {
@@ -75,10 +87,12 @@ const Item: FC<
               } as CSSProperties
             }
           >
+            {i === 0 && <p className="text-2xl text-red-400">{damage}</p>}
             <Star
               key={i}
-              className="animate-spin delay-0"
+              className={"animate-spin delay-0"}
               style={{
+                color: getRandomColor((damage / 150) * 20),
                 width: `${size}px`,
                 height: `${size}px`,
               }}
