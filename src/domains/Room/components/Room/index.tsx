@@ -226,7 +226,6 @@ const FinishRoom = () => {
               {r.rank}
             </span>
             <span>{r.displayName}</span>
-            <span>{r.userId}</span>
           </div>
         ))}
       </div>
