@@ -1,5 +1,6 @@
 import CircularProgressBar from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { Pill } from "lucide-react";
 import { type FC, useCallback, useEffect, useState } from "react";
 import { useConnection } from "../../hooks/useConnect";
 
@@ -60,6 +61,7 @@ export const TypingInput: FC = () => {
           <span className="text-gray-400">{value}</span>
           <span className="text-gray-200">{lestSeq}</span>
         </span>
+        {seq.type === "heal" && <Pill className="text-green-500" />}
         <span className="pl-4 font-bold text-4xl text-primary">
           {seq.level}
         </span>
