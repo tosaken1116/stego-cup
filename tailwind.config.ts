@@ -296,6 +296,10 @@ const config = {
 						transform: "translateX(100%)",
 					},
 				},
+				rise: {
+					"0%": { transform: "rotateX(90deg)" },
+					"100%": { transform: "rotateX(0deg)" },
+				},
 			},
 			transitionDelay: {
 				"1500": "1500ms",
@@ -324,6 +328,7 @@ const config = {
 				"drop-2": "drop-2 4s ease-in-out",
 				"drop-3": "drop-3 4s ease-in-out",
 				"drop-4": "drop-4 4s ease-in-out",
+				rise: "rise 1s ease-out",
 			},
 		},
 	},

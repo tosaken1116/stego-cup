@@ -213,12 +213,18 @@ const FinishRoom = () => {
         {result.map((r, i) => (
           <div
             key={i}
-            className={cn("flex w-full min-w-64 flex-row rounded-sm p-4", {
-              "border-2 border-primary": r.userId === user?.uid,
-              "bg-yellow-500/50": r.rank === 1,
-              "bg-slate-500/50": r.rank === 2,
-              "bg-orange-700/50": r.rank === 3,
-            })}
+            className={cn(
+              "flex animate-rise w-full min-w-64 flex-row rounded-sm p-4",
+              {
+                "border-2 border-primary": r.userId === user?.uid,
+                "bg-yellow-500/50": r.rank === 1,
+                "bg-slate-500/50": r.rank === 2,
+                "bg-orange-700/50": r.rank === 3,
+              }
+            )}
+            style={{
+              animationDelay: `${i * 0.2}s`,
+            }}
           >
             <span className="relative mr-3 ml-2">
               {(r.rank === 1 || r.rank === 2 || r.rank === 3) && (
