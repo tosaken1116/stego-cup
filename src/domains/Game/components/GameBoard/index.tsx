@@ -12,7 +12,7 @@ export const GameBoard = () => {
     return <GameOver rank={rank} />;
   }
   return (
-    <span>
+    <span className="flex flex-col items-center justify-center gap-x-4">
       <DifficultProgress difficult={difficult} />
       <TypingInput />
       <Life life={life} />
