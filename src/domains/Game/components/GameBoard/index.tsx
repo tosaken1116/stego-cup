@@ -1,15 +1,15 @@
 import { useAudio } from "@/hooks/audio";
 import { cn } from "@/lib/utils";
 import { Heart, Sparkle } from "lucide-react";
-import { use, useEffect, useState } from "react";
+import { type FC, use, useEffect, useState } from "react";
 import { useConnection } from "../../hooks/useConnect";
 import type { Difficult } from "../../types";
 import { TypingInput } from "../TypingInput";
 
 export const GameBoard = () => {
-  const { difficult, life } = useConnection();
+  const { difficult, life, rank } = useConnection();
   if (life <= 0) {
-    return <GameOver />;
+    return <GameOver rank={rank} />;
   }
   return (
     <span>
@@ -20,10 +20,11 @@ export const GameBoard = () => {
   );
 };
 
-const GameOver = () => {
+const GameOver: FC<{ rank: number }> = ({ rank }) => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
       <p className="text-4xl">ゲームオーバー</p>
+      <p className="text-2xl">あなたの順位: {rank}位</p>
     </div>
   );
 };
