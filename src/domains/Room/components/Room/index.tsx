@@ -105,6 +105,7 @@ const PendingRoom = ({
   ownerId,
   user,
   startedAt,
+  maxUserNum,
   handleStartGame,
 }: RoomType & { isMatched: boolean } & { user: User | null } & {
   handleStartGame: () => void;
@@ -126,14 +127,18 @@ const PendingRoom = ({
         <FinishMatching />
       )}
       <CircularProgressBar
-        progress={userNum / 99}
+        progress={userNum / (maxUserNum ?? 99)}
         className={
-          Math.round((userNum / 99) * 100) === 100 ? "animate-fade-out" : ""
+          Math.round((userNum / (maxUserNum ?? 99)) * 100) === 100
+            ? "animate-fade-out"
+            : ""
         }
       />
       <div className="mt-4 text-center">
         <p className="text-gray-500 text-sm">参加人数</p>
-        <p className="font-bold text-xl">{`${userNum} 人`}</p>
+        <p className="font-bold text-xl">
+          {`${userNum} 人`}/{`${maxUserNum ?? 99}人`}
+        </p>
       </div>
       {ownerId === user?.uid && userNum > 1 && (
         <button
@@ -196,6 +201,10 @@ const PlayingRoom = () => {
 const FinishRoom = () => {
   const { result } = useConnection();
   const { user } = useAuthUseCase();
+  const { play } = useAudio("show.mp3");
+  useEffect(() => {
+    play();
+  }, [play]);
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center">
       <h1 className="text-4xl">ゲーム終了</h1>
