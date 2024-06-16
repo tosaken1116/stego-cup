@@ -57,7 +57,7 @@ const Item: FC<
         } as CSSProperties
       }
     >
-      {Array.from({ length: (damage / 150) * 20 }, (_, i) => {
+      {Array.from({ length: (damage / 150) * 40 }, (_, i) => {
         const { x: offsetX, y: offsetY } = getRandomOffset(
           distanceX,
           distanceY
