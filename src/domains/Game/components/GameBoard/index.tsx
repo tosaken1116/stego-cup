@@ -38,7 +38,6 @@ const DifficultProgress = ({
   });
   const level = Math.floor((difficult?.difficult ?? 0) / 100) + 1;
   const progress = (difficult?.difficult ?? 0) % 100;
-  console.log(level, progress);
   useEffect(() => {
     if (difficult?.cause === "damage") {
       setIsAnimate({
