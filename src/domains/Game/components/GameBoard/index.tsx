@@ -20,7 +20,7 @@ export const GameBoard = () => {
   );
 };
 
-const GameOver: FC<{ rank: number }> = ({ rank }) => {
+const GameOver: FC<{ rank: number | null }> = ({ rank }) => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
       <p className="text-4xl">ゲームオーバー</p>
